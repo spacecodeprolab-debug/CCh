@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F5C518">
+<title>Chicken Craving Hub · Menu</title>
+<meta name="description" content="Shawarma, burgers, wraps, pizza, fries and fried chicken. Order from the Chicken Craving Hub menu on WhatsApp.">
+<meta property="og:title" content="Chicken Craving Hub">
+<meta property="og:description" content="Browse the full menu and order on WhatsApp.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23F5C518'/%3E%3Ctext x='16' y='22' font-size='14' font-weight='900' text-anchor='middle' fill='%231a1a1a' font-family='sans-serif'%3ECCH%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="brand" href="#top"><img class="logo" src="img/logo.png" alt="" onload="this.nextElementSibling.remove()" onerror="this.remove()"><span class="bd" data-ico="leg"></span><span>Chicken Craving Hub</span></a>
+  <div class="links" id="links"><a href="#menu">Menu</a><a href="#visit">Branches</a><a href="#visit">Call us</a></div>
+  <button class="ordbtn" id="ordbtn">Your order <b id="nc">0</b></button>
+  <button class="tog" id="tog" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+</nav>
+<header class="hero" id="top">
+  <div class="hcopy">
+    <h1><span><i>Crispy.</i></span><span><i>Cheesy.</i></span><span><i class="red">Crazy good.</i></span></h1>
+    <p>Fresh chicken, burgers and shawarma, made the moment you order. Pick your branch and send it on WhatsApp.</p>
+    <div class="cta"><a class="btn big" href="#menu">Start your order</a><a class="btn ghost" href="#menu" data-pick="b">Best sellers</a></div>
+    <div class="proof"><span>Made fresh to order</span><span>4 branches in Ahmedabad</span><span>Order in a minute</span></div>
+  </div>
+  <div class="art" aria-hidden="true">
+    <div class="burst"></div>
+    <div class="bucket">
+      <span class="dr d1" data-ico="leg"></span><span class="dr d2" data-ico="leg"></span><span class="dr d3" data-ico="leg"></span>
+      <svg viewBox="0 0 320 340"><defs><clipPath id="bk"><path d="M52 130h216l-24 192a14 14 0 0 1-14 12H90a14 14 0 0 1-14-12z"/></clipPath></defs>
+        <g clip-path="url(#bk)"><rect width="320" height="340" fill="#D62828"/><g stroke="#fff" stroke-width="34"><line x1="96" y1="120" x2="112" y2="340"/><line x1="160" y1="120" x2="160" y2="340"/><line x1="224" y1="120" x2="208" y2="340"/></g></g>
+        <path d="M52 130h216l-24 192a14 14 0 0 1-14 12H90a14 14 0 0 1-14-12z" fill="none" stroke="#1a1a1a" stroke-width="6" stroke-linejoin="round"/>
+        <rect x="38" y="112" width="244" height="34" rx="17" fill="#fff" stroke="#1a1a1a" stroke-width="6"/>
+        <circle cx="160" cy="236" r="52" fill="#F5C518" stroke="#1a1a1a" stroke-width="6"/>
+        <g font-family="inherit" font-weight="900" text-anchor="middle" fill="#1a1a1a" font-size="17"><text x="160" y="226">Chicken</text><text x="160" y="244">Craving</text><text x="160" y="262">Hub</text></g></svg>
+      <i class="crumb cr1"></i><i class="crumb cr2"></i><i class="crumb cr3"></i>
+    </div>
+    <div class="stick star"><svg viewBox="0 0 100 100"><polygon points="100.0,50.0 91.2,58.2 96.2,69.1 84.9,73.3 85.4,85.4 73.3,84.9 69.1,96.2 58.2,91.2 50.0,100.0 41.8,91.2 30.9,96.2 26.7,84.9 14.6,85.4 15.1,73.3 3.8,69.1 8.8,58.2 0.0,50.0 8.8,41.8 3.8,30.9 15.1,26.7 14.6,14.6 26.7,15.1 30.9,3.8 41.8,8.8 50.0,0.0 58.2,8.8 69.1,3.8 73.3,15.1 85.4,14.6 84.9,26.7 96.2,30.9 91.2,41.8" fill="#D62828" stroke="#1a1a1a" stroke-width="3"/></svg><span>Hot &amp;<br>fresh</span></div>
+    <div class="stick tag2"><small>Meals from</small><b>₹70</b></div>
+  </div>
+</header>
+<div class="tape" aria-hidden="true"><div class="rib r1"><div id="rb1"></div></div><div class="rib r2"><div id="rb2"></div></div></div>
+<nav class="bar" id="bar" aria-label="Menu categories"><div class="bar-in" id="cats"></div></nav>
+<main id="menu">
+  <section class="crave"><h2>What are you craving?</h2><div class="tiles" id="tiles"></div><input id="q" type="search" placeholder="Or search the menu" aria-label="Search the menu"></section>
+  <div id="list"></div>
+  <p id="none" hidden>Nothing matches that. Try another word or clear the filters.</p>
+</main>
+<footer id="visit">
+  <b>Chicken Craving Hub</b>
+  <div class="branches" id="branches"></div>
+  <p class="own" id="owners"></p>
+</footer>
+<div class="zcredit" id="credit">
+  <a class="badge" href="https://instagram.com/zyrac__" target="_blank" rel="noopener" aria-label="Zyrac on Instagram">
+    <svg viewBox="0 0 100 100"><defs><path id="zc" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+      <circle cx="50" cy="50" r="49" fill="#1a1a1a"/>
+      <g class="spin"><text font-size="10.5" font-weight="900" fill="#F5C518" font-family="inherit"><textPath href="#zc" textLength="234" lengthAdjust="spacing">Built by Zyrac • Your best digital self • </textPath></text></g>
+      <circle cx="50" cy="50" r="21" fill="#D62828" stroke="#F5C518" stroke-width="3"/><text x="50" y="59" text-anchor="middle" font-size="26" font-weight="900" fill="#fff" font-family="inherit">Z</text></svg>
+  </a>
+  <div class="cr-txt">
+    <p class="cr-t">Built by <span class="zy">Zyrac<svg viewBox="0 0 84 10" preserveAspectRatio="none"><path d="M2 6Q12 0 22 6T42 6T62 6T82 6" pathLength="1"/></svg></span></p>
+    <a class="pill" href="https://instagram.com/zyrac__" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="6"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>@zyrac__</a>
+  </div>
+  <small class="copy">© 2026 Chicken Craving Hub</small>
+</div>
+<button class="cartbar" id="cartbar" hidden aria-label="Open order"><span id="cc"></span><span id="ct"></span></button>
+<div class="scrim" id="scrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></section>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your order" hidden></aside>
+<script src="menu.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
