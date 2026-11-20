@@ -38,7 +38,7 @@ function render() {
       ${i.f.includes("b") ? `<span class="tag">Best seller</span>` : ""}<b>${dot(i.f)}${i.n}</b>${i.note ? `<small>${i.note}</small>` : ""}
       <span class="foot"><span class="price">${i.sizes ? "<em>from </em>" : ""}${inr(i.from)}</span><span class="plus">+</span></span></button>`).join("")}</div></section>`;
   }).join("");
-  $("#none").hidden = any; watch();
+  $("#none").hidden = any; watch(); syncCards();
 }
 $("#cats").innerHTML = MENU.map(([c]) => `<a href="#${slug(c)}">${c}</a>`).join("");
 $("#q").addEventListener("input", render);
@@ -49,16 +49,21 @@ $("#tiles").innerHTML = TILES.map(([k, l, ic]) => `<button class="tile ${k === "
 function pick(k) { Object.keys(flags).forEach(x => flags[x] = x === k); document.querySelectorAll(".tile").forEach(t => t.classList.toggle("on", t.dataset.k === k || (k === "all" && t.dataset.k === "all"))); render(); }
 $("#tiles").addEventListener("click", e => { const t = e.target.closest(".tile"); if (t) pick(t.dataset.k); });
 document.querySelectorAll("[data-pick]").forEach(a => a.addEventListener("click", () => pick(a.dataset.pick)));
-// ribbons
-const rib = (el, w) => { const h = Array(3).fill(w.map(t => `<span>${t}</span>`).join("")).join(""); el.innerHTML = h + h; };
-rib($("#rb1"), ["Crispy", "Cheesy", "Crazy good"]); rib($("#rb2"), ["Made fresh to order", "4 branches in Ahmedabad", "Order on WhatsApp"]);
 
 // reveal on scroll + category spy
 const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (e.target.classList.add("in"), io.unobserve(e.target))), {rootMargin: "0px 0px -8% 0px"});
 const spy = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) {
   document.querySelectorAll(".bar a").forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + e.target.id));
   const on = $(".bar a.on"), c = $("#cats"); on && c.scrollTo({left: on.offsetLeft - c.clientWidth / 2 + on.offsetWidth / 2, behavior: "smooth"}); } }), {rootMargin: "-30% 0px -65% 0px"});
-function watch() { document.querySelectorAll(".rv").forEach(el => io.observe(el)); document.querySelectorAll(".cat").forEach(el => spy.observe(el)); }
+function watch() { document.querySelectorAll(".rv").forEach(el => io.observe(el)); mark(); }
+
+// active category follows the scroll position (the sticky header height is accounted for)
+function mark() { let cur = null; document.querySelectorAll(".cat").forEach(el => { if (el.getBoundingClientRect().top <= 170) cur = el; });
+  const links = document.querySelectorAll(".bar a"); let on = null;
+  links.forEach(a => { const is = cur && a.getAttribute("href") === "#" + cur.id; a.classList.toggle("on", !!is); if (is) on = a; });
+  if (on && on !== mark.last) { mark.last = on; const c = $("#cats"); c.scrollTo({left: on.offsetLeft - c.clientWidth / 2 + on.offsetWidth / 2, behavior: "smooth"}); } }
+let tick = false; addEventListener("scroll", () => { if (!tick) { tick = true; requestAnimationFrame(() => { mark(); $("#prog").style.setProperty("--p", Math.min(1, scrollY / Math.max(1, document.documentElement.scrollHeight - innerHeight))); tick = false; }); } }, {passive: true});
+new IntersectionObserver(([e]) => document.body.classList.toggle("scrolled", !e.isIntersecting), {rootMargin: "-70px 0px 0px 0px"}).observe($("#top"));
 
 // overlays
 const scrim = $("#scrim");
@@ -69,7 +74,32 @@ function closeAll() { scrim.classList.remove("show"); ["#sheet", "#drawer"].forE
 scrim.onclick = closeAll; addEventListener("keydown", e => e.key === "Escape" && closeAll());
 
 // item sheet
-$("#list").addEventListener("click", e => { const b = e.target.closest(".item"); if (b) openItem(items[b.dataset.i]); });
+$("#list").addEventListener("click", e => { const b = e.target.closest(".item"); if (!b) return; const i = items[b.dataset.i];
+  if (e.target.closest(".plus") && !i.sizes) quickAdd(i, b.querySelector(".plus")); else openItem(i); });
+function quickAdd(i, btn) { const key = [i.n, "", ""].join("|"), ex = cart.find(x => x.key === key);
+  ex ? ex.qty++ : cart.push({key, n: i.n, size: "", ads: [], unit: i.from, qty: 1}); save(); burst(btn); fly(btn); bar(true); }
+function burst(el) { const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  for (let k = 0; k < 10; k++) { const d = document.createElement("i"); d.className = "crumbp"; d.style.left = cx + "px"; d.style.top = cy + "px"; document.body.append(d);
+    const a = Math.PI * 2 * k / 10 + Math.random() * .5, m = 30 + Math.random() * 34;
+    d.animate([{transform: "translate(-50%,-50%) scale(1)", opacity: 1}, {transform: `translate(calc(-50% + ${Math.cos(a) * m}px),calc(-50% + ${Math.sin(a) * m}px)) scale(.3)`, opacity: 0}], {duration: 600 + Math.random() * 250, easing: "cubic-bezier(.2,.8,.3,1)"}).onfinish = () => d.remove(); } }
+function syncCards() { document.querySelectorAll(".item").forEach(el => { const i = items[el.dataset.i], q = cart.filter(x => x.n === i.n).reduce((s, x) => s + x.qty, 0), p = el.querySelector(".plus");
+  p.dataset.q = q || ""; p.classList.toggle("has", q > 0); }); }
+// card tilt (mouse only)
+const lst = $("#list");
+lst.addEventListener("pointermove", e => { if (e.pointerType !== "mouse") return; const b = e.target.closest(".item"); if (!b) return; const r = b.getBoundingClientRect();
+  b.style.setProperty("--ry", ((e.clientX - r.left) / r.width - .5) * 10 + "deg"); b.style.setProperty("--rx", (.5 - (e.clientY - r.top) / r.height) * 8 + "deg"); });
+lst.addEventListener("pointerout", e => { const b = e.target.closest(".item"); if (b && !b.contains(e.relatedTarget)) { b.style.removeProperty("--rx"); b.style.removeProperty("--ry"); } });
+// tap the bucket: pieces jump, crumbs fly, CRUNCH! pops
+const bk = document.querySelector(".bucket");
+function crunch() { document.querySelectorAll(".dr,.ng").forEach((el, k) => el.animate([{transform: "none"}, {transform: "translateY(-52px) rotate(8deg)"}, {transform: "none"}], {duration: 700, delay: k * 70, easing: "cubic-bezier(.3,1.5,.5,1)"}));
+  bk.animate([{rotate: "0deg"}, {rotate: "-3deg"}, {rotate: "3deg"}, {rotate: "0deg"}], {duration: 450}); burst(bk);
+  const t = document.createElement("span"); t.className = "crunch"; t.textContent = ["Crunch!", "Crispy!", "Yum!"][Math.floor(Math.random() * 3)]; $("#art").append(t);
+  t.animate([{opacity: 0, transform: "translate(-50%,10px) scale(.4) rotate(-8deg)"}, {opacity: 1, transform: "translate(-50%,-26px) scale(1.15) rotate(-8deg)", offset: .35}, {opacity: 0, transform: "translate(-50%,-70px) scale(1) rotate(-8deg)"}], {duration: 950, easing: "ease-out"}).onfinish = () => t.remove(); }
+$("#art").addEventListener("click", crunch);
+setInterval(() => { if (!document.hidden && scrollY < 500) crunch(); }, 7000);
+// hero parallax (mouse only)
+const art = $("#art"); $("#top").addEventListener("pointermove", e => { if (e.pointerType !== "mouse") return; const r = e.currentTarget.getBoundingClientRect();
+  art.style.setProperty("--mx", ((e.clientX - r.left) / r.width - .5).toFixed(3)); art.style.setProperty("--my", ((e.clientY - r.top) / r.height - .5).toFixed(3)); });
 function openItem(i) {
   let qty = 1; const sh = $("#sheet");
   sh.innerHTML = `<button class="x" aria-label="Close">×</button><h3>${i.n}</h3>${i.note ? `<small>${i.note}</small>` : ""}
@@ -86,13 +116,13 @@ function openItem(i) {
   sh.querySelector(".x").onclick = closeAll;
   $("#add").onclick = () => { const c = calc(), key = [i.n, c.size, c.ads.join()].join("|"), ex = cart.find(x => x.key === key);
     ex ? ex.qty += qty : cart.push({key, n: i.n, size: c.size, ads: c.ads, unit: c.unit, qty});
-    save(); fly($("#add")); closeAll(); bar(true); };
+    save(); burst($("#add")); fly($("#add")); closeAll(); bar(true); };
   open(sh);
 }
 
 // cart bar + drawer
 const count = () => cart.reduce((s, x) => s + x.qty, 0), total = () => cart.reduce((s, x) => s + x.qty * x.unit, 0);
-function bar(pop) { document.body.classList.toggle("hascart", count() > 0); $("#nc").textContent = count(); if (pop) { const o = $("#ordbtn"); o.classList.remove("pop"); void o.offsetWidth; o.classList.add("pop"); } const b = $("#cartbar"); $("#cc").textContent = count() + (count() === 1 ? " item" : " items"); $("#ct").textContent = "View order · " + inr(total());
+function bar(pop) { syncCards(); document.body.classList.toggle("hascart", count() > 0); $("#nc").textContent = count(); if (pop) { const o = $("#ordbtn"); o.classList.remove("pop"); void o.offsetWidth; o.classList.add("pop"); } const b = $("#cartbar"); $("#cc").textContent = count() + (count() === 1 ? " item" : " items"); $("#ct").textContent = "View order · " + inr(total());
   if (count()) { b.hidden = false; requestAnimationFrame(() => b.classList.add("show")); } else { b.classList.remove("show"); }
   if (pop) { b.classList.remove("pop"); void b.offsetWidth; b.classList.add("pop"); } }
 $("#cartbar").onclick = openCart;
