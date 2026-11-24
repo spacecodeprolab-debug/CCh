@@ -164,3 +164,48 @@ body.hascart .zcredit{padding-bottom:96px}
 .awning{position:relative;z-index:5;height:34px;background:repeating-linear-gradient(90deg,var(--red) 0 40px,#fff 40px 80px);-webkit-mask:linear-gradient(#000,#000) top/100% 12px no-repeat,radial-gradient(circle at 20px 12px,#000 19.5px,transparent 20px) 0 0/40px 100% repeat-x;mask:linear-gradient(#000,#000) top/100% 12px no-repeat,radial-gradient(circle at 20px 12px,#000 19.5px,transparent 20px) 0 0/40px 100% repeat-x;transform-origin:top;animation:sway 5s ease-in-out infinite}
 @keyframes sway{50%{transform:scaleY(.9)}}
 .awning{filter:drop-shadow(0 3px 0 var(--k))}
+
+/* ===== menu hardening: cart, checkout, overlays, touch, performance ===== */
+html{scrollbar-gutter:stable}
+html.lock,html.lock body{overflow:hidden;overscroll-behavior:none}
+button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.scrim{z-index:45}.prog{z-index:41}
+.cartbar{visibility:hidden;transition:transform .5s var(--ease),visibility 0s .5s}.cartbar.show{visibility:visible;transition-delay:0s}
+.ordbtn svg{flex:none}.ordbtn{padding:0 7px 0 14px}
+.toast{position:fixed;left:50%;top:calc(76px + env(safe-area-inset-top));translate:-50% -8px;opacity:0;pointer-events:none;background:var(--k);color:var(--y);padding:10px 18px;border-radius:99px;font-weight:800;font-size:.9rem;z-index:95;transition:opacity .25s,translate .25s;white-space:nowrap;max-width:92vw;overflow:hidden;text-overflow:ellipsis}.toast.on{opacity:1;translate:-50% 0}
+/* sheet + drawer layout */
+.dh{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.drawer{display:flex;flex-direction:column;padding:0;gap:0;overflow:hidden}.drawer .dh{padding:18px 20px 8px}
+.sheet{padding-top:0}.sheet .dh{padding:20px 0 6px}
+.db{flex:1;min-height:0;overflow:auto;padding:0 20px 16px;overscroll-behavior:contain}
+.df{padding:12px 20px calc(14px + env(safe-area-inset-bottom));border-top:3px solid var(--k);background:#fff}.df .muted{margin-top:8px}
+.df .btn.full{margin-top:0}
+.x{align-self:auto;flex:none}
+.ci{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:2px dashed var(--line)}
+.cinfo{display:flex;flex-direction:column;gap:2px;min-width:0}.cinfo b{overflow-wrap:anywhere}.cinfo small{color:var(--mut);font-weight:600}
+.lnk{align-self:flex-start;color:var(--red);font-weight:700;font-size:.82rem;text-decoration:underline;padding:6px 0;min-height:32px}
+.f h4{font-size:.8rem;color:var(--mut);margin:20px 0 8px;font-weight:800;letter-spacing:0}
+.f .opts{margin:0}.seg2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fg{margin-top:12px}.fg label{display:block;font-weight:700;font-size:.88rem;margin-bottom:4px}
+.f input:not([type=radio]):not([type=checkbox]),.f textarea{display:block;width:100%;min-height:48px;border:3px solid var(--k);border-radius:14px;padding:10px 14px;background:#fff;font:inherit;font-size:16px;resize:none}
+.f .bad{border-color:var(--red)}.err{color:var(--red);font-weight:700;font-size:.82rem;margin-top:4px}
+.trow{display:flex;justify-content:space-between;align-items:center;font-size:1.25rem;font-weight:900;margin-bottom:10px}
+.empty{text-align:center;padding:36px 8px;display:flex;flex-direction:column;align-items:center;gap:12px}.empty .btn.full{margin-top:0}
+.ei{width:72px;height:72px;border-radius:50%;background:var(--y);display:grid;place-items:center}.ei svg{width:38px;height:38px}.ei.ok{background:var(--ok);color:#fff;font-size:2rem;font-weight:900}
+.btn.full{width:100%}
+/* hover effects must not stick on touch screens */
+@media(hover:none){
+ .item:hover,.item.in:hover{--ty:0px;background:var(--card);box-shadow:0 6px 0 var(--k)}
+ .item:hover .ic{rotate:none}.item:hover .plus:not(.has){rotate:none;background:var(--k);color:var(--y)}
+ .tile:hover{transform:none;box-shadow:0 5px 0 var(--k)}.btn:hover,.ordbtn:hover{transform:none}.btn.big:hover{box-shadow:0 6px 0 var(--k)}.links a:hover{background:transparent;color:#e9e4cf}
+}
+/* performance: no animated blur, pause hero motion when it is off screen */
+.steam{filter:none}.bucket,.burst{will-change:transform}
+body.hero-off .art,body.hero-off .art *,body.hero-off .fl2{animation-play-state:paused}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cartbar{transition:none}}
+.tile{min-width:0}.tile>span:last-child{min-width:0}.tile b{overflow-wrap:anywhere}
+@media(max-width:900px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:640px) and (max-width:900px){.tiles{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.btn.red{background:var(--red);color:#fff;border-color:var(--k);box-shadow:0 4px 0 var(--k)}.btn.red:active{box-shadow:0 1px 0 var(--k)}
+.opts.bad .opt{border-color:var(--red)}
+@media(hover:none){.btn.red:hover{box-shadow:0 4px 0 var(--k)}}

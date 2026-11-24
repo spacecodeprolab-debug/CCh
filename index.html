@@ -20,13 +20,13 @@
 <linearGradient id="shade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".38"/><stop offset=".22" stop-color="#fff" stop-opacity=".2"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset=".86" stop-color="#000" stop-opacity=".2"/><stop offset="1" stop-color="#000" stop-opacity=".42"/></linearGradient>
 <filter id="crisp" x="-12%" y="-12%" width="124%" height="124%"><feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="8" result="d"/><feTurbulence type="fractalNoise" baseFrequency=".6" numOctaves="2" seed="9" result="g"/><feColorMatrix in="g" type="matrix" values="0 0 0 0 .32  0 0 0 0 .13  0 0 0 0 .02  0 0 0 1.7 -.62" result="sp"/><feComposite in="sp" in2="d" operator="in" result="s2"/><feMerge><feMergeNode in="d"/><feMergeNode in="s2"/></feMerge></filter>
 <symbol id="leg" viewBox="0 0 120 140"><rect x="53" y="98" width="14" height="30" rx="5" fill="url(#bone)" stroke="#bfae86" stroke-width="1.5"/><circle cx="50" cy="130" r="8" fill="url(#bone)" stroke="#bfae86" stroke-width="1.5"/><circle cx="70" cy="130" r="8" fill="url(#bone)" stroke="#bfae86" stroke-width="1.5"/><path d="M49 84h22l-3 18H52z" fill="#d9b06a" stroke="#9a6a2a" stroke-width="1.4"/><path d="M60 2C87 2 101 22 97 48 93 68 77 78 71 90H49C43 78 27 68 23 48 19 22 33 2 60 2Z" fill="url(#meat)" filter="url(#crisp)"/><path d="M40 32C48 40 52 52 50 66M73 26C66 38 66 50 70 62M58 14C61 22 61 30 58 38" stroke="#5e2f07" stroke-width="2.4" fill="none" opacity=".4" stroke-linecap="round"/><g fill="#ffe7a6" opacity=".55"><ellipse cx="36" cy="46" rx="3.2" ry="1.7"/><ellipse cx="82" cy="40" rx="3" ry="1.6"/><ellipse cx="62" cy="62" rx="2.6" ry="1.4"/><ellipse cx="46" cy="22" rx="2.6" ry="1.4"/></g><ellipse cx="44" cy="26" rx="14" ry="7" fill="#fff" opacity=".3" transform="rotate(-28 44 26)"/></symbol>
-<symbol id="nug" viewBox="0 0 60 50"><path d="M9 30C5 20 13 10 23 11 28 3 41 3 46 10 56 10 59 22 53 30 57 40 47 46 37 43 29 49 15 45 15 37 10 37 9 30Z" fill="url(#meat)" filter="url(#crisp)"/><path d="M22 20C26 24 27 30 25 34M38 17C36 23 37 28 40 32" stroke="#5e2f07" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/><ellipse cx="24" cy="16" rx="8" ry="4" fill="#fff" opacity=".3" transform="rotate(-20 24 16)"/></symbol>
+<symbol id="nug" viewBox="0 0 60 50"><path d="M9 30C5 20 13 10 23 11 28 3 41 3 46 10 56 10 59 22 53 30 57 40 47 46 37 43 29 49 15 45 15 37 10 37 9 34 9 30Z" fill="url(#meat)" filter="url(#crisp)"/><path d="M22 20C26 24 27 30 25 34M38 17C36 23 37 28 40 32" stroke="#5e2f07" stroke-width="2" fill="none" opacity=".4" stroke-linecap="round"/><ellipse cx="24" cy="16" rx="8" ry="4" fill="#fff" opacity=".3" transform="rotate(-20 24 16)"/></symbol>
 </defs></svg>
 <div class="prog" id="prog"></div>
 <nav class="nav" id="nav" aria-label="Main">
   <a class="brand" href="#top"><img class="logo" src="img/logo.png" alt="" onload="this.nextElementSibling.remove()" onerror="this.remove()"><span class="bd" data-ico="leg"></span><span>Chicken Craving Hub</span></a>
   <div class="links" id="links"><a href="#menu">Menu</a><a href="#visit">Branches</a><a href="#visit">Call us</a></div>
-  <button class="ordbtn" id="ordbtn">Your order <b id="nc">0</b></button>
+  <button class="ordbtn" id="ordbtn" aria-label="Open your cart"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/><path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.5L21 8H6"/></svg><span>Cart</span><b id="nc">0</b></button>
   <button class="tog" id="tog" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
 </nav>
 <header class="hero" id="top">
@@ -57,7 +57,7 @@
 <div class="awning" aria-hidden="true"></div>
 <nav class="bar" id="bar" aria-label="Menu categories"><div class="bar-in" id="cats"></div></nav>
 <main id="menu">
-  <section class="crave"><h2>What are you craving?</h2><div class="tiles" id="tiles"></div><input id="q" type="search" placeholder="Or search the menu" aria-label="Search the menu"></section>
+  <section class="crave"><h2>What are you craving?</h2><div class="tiles" id="tiles"></div><input id="q" type="search" placeholder="Or search the menu" aria-label="Search the menu" enterkeyhint="search" autocomplete="off"></section>
   <div id="list"></div>
   <p id="none" hidden>Nothing matches that. Try another word or clear the filters.</p>
 </main>
@@ -73,10 +73,10 @@
   </a>
   <small class="copy">© 2026 Chicken Craving Hub</small>
 </div>
-<button class="cartbar" id="cartbar" hidden aria-label="Open order"><span id="cc"></span><span id="ct"></span></button>
+<button class="cartbar" id="cartbar" type="button" aria-label="Open your cart" aria-hidden="true" tabindex="-1"><span id="cc"></span><span id="ct"></span></button>
 <div class="scrim" id="scrim" hidden></div>
-<section class="sheet" id="sheet" role="dialog" aria-modal="true" hidden></section>
-<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your order" hidden></aside>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Customise your item" hidden></section>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Your cart" hidden></aside>
 <script src="menu.js"></script>
 <script src="script.js"></script>
 </body>
